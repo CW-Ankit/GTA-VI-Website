@@ -18,7 +18,7 @@ A high-performance, non-responsive landing page for Grand Theft Auto VI, built w
 
 1.  **Clone the repository**:
     ```bash
-    git clone [https://github.com/CW-Ankit/GTA-VI-Website.git](https://github.com/CW-Ankit/GTA-VI-Website.git)
+    git clone https://github.com/CW-Ankit/GTA-VI-Website.git
     ```
 
 2.  **Navigate to the project directory (if not already there)**:
