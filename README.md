@@ -1,4 +1,4 @@
-# GTA VI Website Clone
+# GTA VI Website
 
 A high-performance, non-responsive landing page for Grand Theft Auto VI, built with modern front-end technologies to replicate the aesthetic and interactive feel of the official Rockstar Games presentation.
 
