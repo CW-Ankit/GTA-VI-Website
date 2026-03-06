@@ -1,16 +1,37 @@
-# React + Vite
+# GTA VI Website Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance, non-responsive landing page for Grand Theft Auto VI, built with modern front-end technologies to replicate the aesthetic and interactive feel of the official Rockstar Games presentation.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **React + Vite**: Made using the latest React + Vite JavaScript setup.
+* **GSAP**: For Beautiful 3D like Animations.
+  
+## ✨ Features
 
-## React Compiler
+* **Dynamic Hero Section**: Immersive visuals featuring the GTA VI branding.
+* **Gameplay Carousel**: Interactive slider showcasing game screenshots and environment details.
+* **Scroll Animations**: Entrance effects for sections using `data-aos` attributes.
+* **Platform Branding**: Integrated logos for PS5, Xbox Series X|S, and Rockstar Games.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Installation & Setup
 
-## Expanding the ESLint configuration
+1.  **Clone the repository**:
+    ```bash
+    git clone [https://github.com/CW-Ankit/GTA-VI-Website.git](https://github.com/CW-Ankit/GTA-VI-Website.git)
+    ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2.  **Navigate to the project directory (if not already there)**:
+    ```bash
+    cd GTA-VI-Website
+    ```
+
+3.  **Run the project**:
+    ```bash
+    npm install
+    npm run dev
+    ```
+
+
+## ⚖️ Disclaimer
+This project is for educational and portfolio purposes only. I am not affiliated with Rockstar Games or Take-Two Interactive. All visual assets and trademarks belong to their respective owners.
