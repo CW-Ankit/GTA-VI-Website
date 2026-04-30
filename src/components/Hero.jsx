@@ -90,12 +90,19 @@ const Hero = () => {
     const handleDeviceOrientation = (event) => {
       // gamma: left to right tilt [-90, 90]
       // beta: front to back tilt [-180, 180]
-      const xMove = (event.gamma || 0) * 0.5; 
-      const yMove = (event.beta || 0) * 0.5;
       
-      // Limit the movement range to prevent extreme shifting
-      const clampedX = Math.max(Math.min(xMove, 20), -20);
-      const clampedY = Math.max(Math.min(yMove, 20), -20);
+      // Normalizing beta: most users hold phone at ~80 degrees. 
+      // We subtract 80 to make the "neutral" position a natural holding angle.
+      const normalizedBeta = (event.beta || 0) - 80; 
+      const normalizedGamma = (event.gamma || 0);
+      
+      // Sensitivity multipliers
+      const xMove = normalizedGamma * 0.8; 
+      const yMove = normalizedBeta * 0.8;
+      
+      // Limit the movement range to prevent the images from sliding off screen
+      const clampedX = Math.max(Math.min(xMove, 30), -30);
+      const clampedY = Math.max(Math.min(yMove, 30), -30);
       
       applyParallax(clampedX, clampedY);
     }
@@ -115,6 +122,7 @@ const Hero = () => {
           console.error("Gyro permission denied:", error);
         }
       } else {
+        // Android and other devices usually don't require requestPermission
         window.addEventListener("deviceorientation", handleDeviceOrientation);
       }
     }
@@ -122,19 +130,25 @@ const Hero = () => {
     // Add desktop listener
     window.addEventListener("mousemove", handleMouseMove);
     
-    // Add a one-time click listener to request gyro permission on mobile
-    const mobilePermissionHandler = () => {
+    // Request permission on any user interaction (click or touch)
+    const interactionHandler = () => {
       if (window.innerWidth < 768) {
         requestGyroPermission();
-        window.removeEventListener("click", mobilePermissionHandler);
+        // We can't just remove the listener immediately because requestPermission 
+        // needs to be called inside the event loop of the interaction.
+        window.removeEventListener("click", interactionHandler);
+        window.removeEventListener("touchstart", interactionHandler);
       }
     };
-    window.addEventListener("click", mobilePermissionHandler);
+    
+    window.addEventListener("click", interactionHandler);
+    window.addEventListener("touchstart", interactionHandler);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("deviceorientation", handleDeviceOrientation);
-      window.removeEventListener("click", mobilePermissionHandler);
+      window.removeEventListener("click", interactionHandler);
+      window.removeEventListener("touchstart", interactionHandler);
     };
   })
 

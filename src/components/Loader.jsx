@@ -4,37 +4,46 @@
  * while the browser fetches essential assets like fonts and images.
  */
 
-import React, { useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 
 /**
  * Loader Component.
  * 
- * Displays a centered "VI" logo on a black background. 
- * Immediately upon mounting, the logo begins a slow, atmospheric fade-out 
- * to create a cinematic transition.
+ * Displays the "VI" logo using the exact same SVG structure as the IntroAnimation
+ * to ensure a seamless visual transition.
  * 
  * @component
  * @returns {JSX.Element} The loading screen.
  */
 const Loader = () => {
   useGSAP(() => {
-    // Slow cinematic fade out of the VI logo
-    gsap.to(".loader-text", {
+    // Slow cinematic fade out of the VI logo to lead into the intro animation
+    gsap.to(".loader-vi", {
       opacity: 0,
       duration: 2,
       ease: "power1.inOut",
-      repeat: -1, // Loop the fade to keep the screen alive while loading
+      repeat: -1,
       yoyo: true
     });
   });
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black">
-      <h1 className="loader-text text-white text-8xl md:text-9xl font-bold tracking-tighter">
-        VI
-      </h1>
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black">
+      <svg viewBox='0 0 800 600' preserveAspectRatio='xMidYMid slice' className="w-full h-full">
+        <text 
+          className="loader-vi"
+          x="50%" 
+          y="50%" 
+          fontSize="250" 
+          textAnchor='middle' 
+          fill='white' 
+          dominantBaseline='middle' 
+          fontFamily='Arial Black'
+        >
+          VI
+        </text>
+      </svg>
     </div>
   );
 };
