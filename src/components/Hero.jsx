@@ -5,15 +5,16 @@
  * and Gyro-based parallax effects for mobile devices.
  */
 
+import React from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 
 /**
  * Hero Component.
  * 
- * Implements entrance animations and a dual-system parallax effect:
- * 1. Mouse-tracking for desktop users.
- * 2. Device Orientation (Gyroscope) for mobile users.
+ * Implements entrance animations and a dual-system parallax effect.
+ * Uses a clipping wrapper for the character image to ensure perfect 
+ * responsiveness across all device types (Virtual Cropping).
  * 
  * @component
  * @returns {JSX.Element} The Hero section with parallax images and text.
@@ -29,8 +30,8 @@ const Hero = () => {
       ease: "easeInOut"
     })
 
-    // Responsive animation for the girl image
-    const girlBottomValue = window.innerWidth < 768 ? "-40%" : "-75%";
+    // Character Entrance: we animate the image inside the wrapper
+    const girlBottomValue = window.innerWidth < 768 ? "-10%" : "-20%";
     
     gsap.to(".girl", {
       scale: 0.9,
@@ -44,12 +45,8 @@ const Hero = () => {
 
     /**
      * Parallax Application Logic
-     * Applies movements to layers based on provided x and y offsets.
-     * @param {number} xOffset - Horizontal shift value.
-     * @param {number} yOffset - Vertical shift value.
      */
     const applyParallax = (xOffset, yOffset) => {
-      // Use more visible multipliers and a shorter duration for a snappier feel
       gsap.to(".imagesdiv .text", {
         x: xOffset * 0.5,
         y: yOffset * 0.5,
@@ -70,46 +67,23 @@ const Hero = () => {
       })
     }
 
-    /**
-     * Mouse Parallax Handler (Desktop)
-     * @param {MouseEvent} e - The mouse event object.
-     */
     const handleMouseMove = (e) => {
       if (window.innerWidth < 768) return;
-
       const xMove = (e.clientX / window.innerWidth - 0.5) * 60
       const yMove = (e.clientY / window.innerHeight - 0.5) * 60
       applyParallax(xMove, yMove);
     }
 
-    /**
-     * Gyro Parallax Handler (Mobile)
-     * Maps device orientation angles to pixel offsets.
-     * @param {DeviceOrientationEvent} event - The device orientation event.
-     */
     const handleDeviceOrientation = (event) => {
-      // gamma: left to right tilt [-90, 90]
-      // beta: front to back tilt [-180, 180]
-      
-      // Normalizing beta: most users hold phone at ~80 degrees. 
-      // We subtract 80 to make the "neutral" position a natural holding angle.
       const normalizedBeta = (event.beta || 0) - 80; 
       const normalizedGamma = (event.gamma || 0);
-      
-      // Sensitivity multipliers
       const xMove = normalizedGamma * 0.8; 
       const yMove = normalizedBeta * 0.8;
-      
-      // Limit the movement range to prevent the images from sliding off screen
       const clampedX = Math.max(Math.min(xMove, 30), -30);
       const clampedY = Math.max(Math.min(yMove, 30), -30);
-      
       applyParallax(clampedX, clampedY);
     }
 
-    /**
-     * Permission Request for iOS Device Orientation
-     */
     const requestGyroPermission = async () => {
       if (typeof DeviceOrientationEvent !== 'undefined' && 
           typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -122,25 +96,18 @@ const Hero = () => {
           console.error("Gyro permission denied:", error);
         }
       } else {
-        // Android and other devices usually don't require requestPermission
         window.addEventListener("deviceorientation", handleDeviceOrientation);
       }
     }
 
-    // Add desktop listener
     window.addEventListener("mousemove", handleMouseMove);
-    
-    // Request permission on any user interaction (click or touch)
     const interactionHandler = () => {
       if (window.innerWidth < 768) {
         requestGyroPermission();
-        // We can't just remove the listener immediately because requestPermission 
-        // needs to be called inside the event loop of the interaction.
         window.removeEventListener("click", interactionHandler);
         window.removeEventListener("touchstart", interactionHandler);
       }
     };
-    
     window.addEventListener("click", interactionHandler);
     window.addEventListener("touchstart", interactionHandler);
 
@@ -163,7 +130,19 @@ const Hero = () => {
         <h3 className='-ml-5 md:-ml-15'>Auto</h3>
       </div>
       
-      <img className='girl scale-[0.75] object-cover absolute rotate-45 left-1/2 -translate-x-1/2 bottom-[-80%] md:bottom-[-150%] z-4' src="./girlbg.png" />
+      {/* 
+          VIRTUAL CROP WRAPPER 
+          This div acts as a window. Anything outside its bounds is cropped.
+          - h-[70vh] on mobile ensures the image doesn't push the whole page down.
+          - overflow-hidden performs the 'crop'.
+      */}
+      <div className="girl-wrapper absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[70vh] md:h-full overflow-hidden z-4 pointer-events-none">
+        <img 
+          className='girl scale-[0.7] md:scale-[0.75] object-cover absolute left-1/2 -translate-x-1/2 bottom-[-100%] md:bottom-[-150%] rotate-45' 
+          src="./girlbg.png" 
+          alt="Character"
+        />
+      </div>
     </div>
   );
 };
