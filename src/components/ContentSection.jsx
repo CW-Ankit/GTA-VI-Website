@@ -3,7 +3,6 @@
  * @description Information section detailing game features and providing a CTA.
  */
 
-import React from 'react';
 
 /**
  * ContentSection Component.

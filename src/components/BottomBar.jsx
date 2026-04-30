@@ -3,7 +3,6 @@
  * @description UI element providing page navigation cues and platform branding.
  */
 
-import React from 'react';
 
 /**
  * BottomBar Component.

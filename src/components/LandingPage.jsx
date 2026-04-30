@@ -4,7 +4,6 @@
  * Orchestrates the layout and entrance animations for the primary page sections.
  */
 
-import React from 'react';
 import "remixicon/fonts/remixicon.css";
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';

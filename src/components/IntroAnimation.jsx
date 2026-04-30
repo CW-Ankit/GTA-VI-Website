@@ -4,7 +4,6 @@
  * Uses GSAP to create a masking animation that reveals the site.
  */
 
-import React from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 
