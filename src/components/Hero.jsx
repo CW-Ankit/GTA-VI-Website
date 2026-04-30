@@ -124,6 +124,13 @@ const Hero = () => {
       <img className='sky rotate-[-5deg] w-full h-full object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-1 scale-[1.5]' src="./sky.png" />
       <img className='bg w-full h-full object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-2 scale-[1.2]' src="./bg.png" />
       
+      {/* 
+          RADIAL FADE OVERLAY
+          Creates a soft, expanding black blur from the bottom center.
+          z-3 ensures it is above the backgrounds but behind the character.
+      */}
+      <div className="radial-fade absolute bottom-0 left-0 w-full h-full z-3 pointer-events-none bg-[radial-gradient(circle_at_bottom,_black_0%,_transparent_75%)]" />
+      
       <div className="text flex flex-col gap-1 text-5xl md:text-8xl text-white absolute z-3 -translate-x-1/2 -translate-y-1/2 top-1/3 left-1/2 text-center px-4">
         <h3 className='-ml-5 md:-ml-15'>Grand</h3>
         <h3 className='ml-5 md:ml-15'>Theft</h3>
