@@ -17,7 +17,8 @@ import ContentSection from './ContentSection';
  * LandingPage Component.
  * 
  * Provides the main layout structure. It applies an initial scale and rotation 
- * to the overall container, which is then animated back to normal using GSAP.
+ * to the overall container on desktop, which is then animated back to normal.
+ * On mobile, it remains flat to avoid clipping.
  * 
  * @component
  * @returns {JSX.Element} The complete landing page layout.
@@ -25,17 +26,20 @@ import ContentSection from './ContentSection';
 const LandingPage = () => {
   useGSAP(() => {
     // Entrance animation for the main wrapper to create a "zoom-in" effect
-    gsap.to(".main", {
-      scale: 1,
-      rotate: 0,
-      duration: 1.7,
-      delay: -0.9,
-      ease: "easeInOut"
-    })
+    // We only animate if we are on a screen size where the rotation/scale was applied
+    if (window.innerWidth >= 768) {
+      gsap.to(".main", {
+        scale: 1,
+        rotate: 0,
+        duration: 1.7,
+        delay: -0.9,
+        ease: "easeInOut"
+      })
+    }
   })
 
   return (
-    <div className='main no-scrollbar w-full rotate-[-5deg] scale-[1.4] bg-blue-500'>
+    <div className='main no-scrollbar w-full md:rotate-[-5deg] md:scale-[1.4] rotate-0 scale-100 bg-blue-500 transition-transform duration-500'>
       <div className="landing overflow-hidden relative w-full h-screen bg-black">
         <Navbar />
         <Hero />
