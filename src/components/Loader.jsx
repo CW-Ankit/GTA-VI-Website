@@ -1,30 +1,33 @@
 /**
  * @file Loader.jsx
- * @description Initial loading screen that displays the brand identity 
- * while the browser fetches essential assets like fonts and images.
+ * @description Handles the pre-intro brand presence.
+ * It ensures the "VI" logo is visible immediately, then seamlessly
+ * integrates the mask image once it's loaded.
  */
 
 import React from 'react';
 
-/**
- * Loader Component.
- * 
- * Displays a static version of the reveal mask. 
- * Once the critical image is loaded, the image is placed behind the mask
- * but the animation remains static until the App component triggers the IntroAnimation.
- * 
- * @component
- * @param {Object} props - Component props.
- * @param {boolean} props.isImageReady - Indicates if the reveal image has finished loading.
- * @returns {JSX.Element} The loading screen.
- */
 const Loader = ({ isImageReady }) => {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black overflow-hidden">
+      {/* 
+          SVG CONFIGURATION:
+          - viewBox='0 0 800 600': Defines the internal coordinate system.
+          - preserveAspectRatio='xMidYMid slice': Ensures the SVG fills the 
+            container like 'object-cover', preventing distortion on different screens.
+          - w-full h-full: Makes the SVG occupy the entire viewport.
+      */}
       <svg viewBox='0 0 800 600' preserveAspectRatio='xMidYMid slice' className="w-full h-full">
         <defs>
+          {/* 
+              SVG MASKING LOGIC:
+              A mask works like a stencil. White areas are "holes" where the image shows 
+              through, and black areas are "solid" and hide everything behind them.
+          */}
           <mask id='loaderMask'>
+            {/* Base layer: Black rectangle hides everything in the viewport */}
             <rect width='100%' height='100%' fill='black' />
+            {/* Stencil: The white "VI" text creates the hole we see through */}
             <text 
               x="50%" 
               y="50%" 
@@ -38,11 +41,21 @@ const Loader = ({ isImageReady }) => {
             </text>
           </mask>
         </defs>
-        {/* Only show the image once it's actually loaded to avoid white flashes */}
+        
+        {/* 
+            DYNAMIC RENDERING:
+            If isImageReady is true, we render the image with the mask applied.
+            This allows the logo to transition from a solid white color to 
+            containing the actual image without a flickering effect.
+        */}
         {isImageReady && (
           <image href='./bg1.png' width='100%' height='100%' preserveAspectRatio='xMidYMid slice' mask="url(#loaderMask)" />
         )}
-        {/* Fallback text if image isn't ready yet */}
+        
+        {/* 
+            FALLBACK STATE:
+            Renders a simple white "VI" text if the image is still downloading.
+        */}
         {!isImageReady && (
           <text 
             x="50%" 
