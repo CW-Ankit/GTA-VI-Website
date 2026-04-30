@@ -1,8 +1,7 @@
 /**
  * @file Hero.jsx
  * @description High-impact visual section of the landing page.
- * Features layered images and parallax-like mouse tracking effects for desktop
- * and Gyro-based parallax effects for mobile devices.
+ * Focuses on perfect image placement and responsiveness across all devices.
  */
 
 import React from 'react';
@@ -12,16 +11,15 @@ import gsap from 'gsap';
 /**
  * Hero Component.
  * 
- * Implements entrance animations and a dual-system parallax effect.
- * Uses a clipping wrapper for the character image to ensure perfect 
- * responsiveness across all device types (Virtual Cropping).
+ * Ensures that the three main visual layers (sky, bg, and character) 
+ * are perfectly centered and positioned regardless of device screen size.
  * 
  * @component
- * @returns {JSX.Element} The Hero section with parallax images and text.
+ * @returns {JSX.Element} The Hero section.
  */
 const Hero = () => {
   useGSAP(() => {
-    // Initial entrance animations for atmospheric elements
+    // Initial entrance animations
     gsap.to(".sky", {
       scale: 1.3,
       rotate: 0,
@@ -30,41 +28,22 @@ const Hero = () => {
       ease: "easeInOut"
     })
 
-    // Character Entrance: we animate the image inside the wrapper
-    const girlBottomValue = window.innerWidth < 768 ? "-10%" : "-20%";
+    // Character entrance: adjust based on device
+    const girlTargetBottom = window.innerWidth < 768 ? "-15%" : "-25%";
     
     gsap.to(".girl", {
       scale: 0.9,
-      x: "-50%",
-      bottom: girlBottomValue,
+      bottom: girlTargetBottom,
       rotate: 0,
       duration: 1.8,
       delay: -0.9,
       ease: "easeInOut"
     })
 
-    /**
-     * Parallax Application Logic
-     */
     const applyParallax = (xOffset, yOffset) => {
-      gsap.to(".imagesdiv .text", {
-        x: xOffset * 0.5,
-        y: yOffset * 0.5,
-        duration: 0.3,
-        ease: "power2.out"
-      })
-      gsap.to(".sky", {
-        x: xOffset * 0.8,
-        y: yOffset * 0.8,
-        duration: 0.3,
-        ease: "power2.out"
-      })
-      gsap.to(".bg", {
-        x: xOffset * 1.5,
-        y: yOffset * 1.5,
-        duration: 0.3,
-        ease: "power2.out"
-      })
+      gsap.to(".imagesdiv .text", { x: xOffset * 0.5, y: yOffset * 0.5, duration: 0.3 })
+      gsap.to(".sky", { x: xOffset * 0.8, y: yOffset * 0.8, duration: 0.3 })
+      gsap.to(".bg", { x: xOffset * 1.5, y: yOffset * 1.5, duration: 0.3 })
     }
 
     const handleMouseMove = (e) => {
@@ -79,22 +58,15 @@ const Hero = () => {
       const normalizedGamma = (event.gamma || 0);
       const xMove = normalizedGamma * 0.8; 
       const yMove = normalizedBeta * 0.8;
-      const clampedX = Math.max(Math.min(xMove, 30), -30);
-      const clampedY = Math.max(Math.min(yMove, 30), -30);
-      applyParallax(clampedX, clampedY);
+      applyParallax(Math.max(Math.min(xMove, 30), -30), Math.max(Math.min(yMove, 30), -30));
     }
 
     const requestGyroPermission = async () => {
-      if (typeof DeviceOrientationEvent !== 'undefined' && 
-          typeof DeviceOrientationEvent.requestPermission === 'function') {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         try {
           const permission = await DeviceOrientationEvent.requestPermission();
-          if (permission === 'granted') {
-            window.addEventListener("deviceorientation", handleDeviceOrientation);
-          }
-        } catch (error) {
-          console.error("Gyro permission denied:", error);
-        }
+          if (permission === 'granted') window.addEventListener("deviceorientation", handleDeviceOrientation);
+        } catch (e) { console.error(e); }
       } else {
         window.addEventListener("deviceorientation", handleDeviceOrientation);
       }
@@ -120,32 +92,39 @@ const Hero = () => {
   })
 
   return (
-    <div className="imagesdiv relative w-full h-screen overflow-hidden">
-      <img className='sky rotate-[-5deg] w-full h-full object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-1 scale-[1.5]' src="./sky.png" />
-      <img className='bg w-full h-full object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-2 scale-[1.2]' src="./bg.png" />
-      
+    <div className="imagesdiv relative w-full h-screen overflow-hidden bg-black">
       {/* 
-          RADIAL FADE OVERLAY
-          Creates a soft, expanding black blur from the bottom center.
-          z-3 ensures it is above the backgrounds but behind the character.
+          BACKGROUND LAYERS 
+          Using absolute inset-0 with object-cover is the most stable way to 
+          ensure images fill the screen and stay centered on all devices.
       */}
-      <div className="radial-fade absolute bottom-0 left-0 w-full h-full z-3 pointer-events-none bg-[radial-gradient(circle_at_bottom,_black_0%,_transparent_75%)]" />
+      <img 
+        className='sky absolute inset-0 w-full h-full object-cover z-1 scale-[1.5] rotate-[-5deg]' 
+        src="./sky.png" 
+        alt="Sky" 
+      />
+      <img 
+        className='bg absolute inset-0 w-full h-full object-cover z-2 scale-[1.2]' 
+        src="./bg.png" 
+        alt="Background" 
+      />
       
-      <div className="text flex flex-col gap-1 text-5xl md:text-8xl text-white absolute z-3 -translate-x-1/2 -translate-y-1/2 top-1/3 left-1/2 text-center px-4">
+      <div className="radial-fade absolute inset-0 z-3 pointer-events-none bg-[radial-gradient(circle_at_bottom,_black_0%,_transparent_75%)]" />
+      
+      <div className="text flex flex-col gap-1 text-5xl md:text-8xl text-white absolute z-10 -translate-x-1/2 -translate-y-1/2 top-1/3 left-1/2 text-center px-4">
         <h3 className='-ml-5 md:-ml-15'>Grand</h3>
         <h3 className='ml-5 md:ml-15'>Theft</h3>
         <h3 className='-ml-5 md:-ml-15'>Auto</h3>
       </div>
       
       {/* 
-          VIRTUAL CROP WRAPPER 
-          This div acts as a window. Anything outside its bounds is cropped.
-          - h-[70vh] on mobile ensures the image doesn't push the whole page down.
-          - overflow-hidden performs the 'crop'.
+          CHARACTER LAYER 
+          The character is anchored to the bottom center. 
+          Rotation is applied first, then translation to keep it centered.
       */}
-      <div className="girl-wrapper absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[70vh] md:h-full overflow-hidden z-4 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
         <img 
-          className='girl scale-[0.7] md:scale-[0.75] object-cover absolute left-1/2 -translate-x-1/2 bottom-[-100%] md:bottom-[-150%] rotate-45' 
+          className='girl absolute left-1/2 -translate-x-1/2 bottom-[-100%] md:bottom-[-150%] rotate-45 scale-[0.7] md:scale-[0.75] object-contain' 
           src="./girlbg.png" 
           alt="Character"
         />
