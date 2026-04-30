@@ -16,7 +16,7 @@
  */
 const ContentSection = () => {
   return (
-    <div className="w-full min-h-screen bg-black flex items-center justify-center px-6 md:px-10 py-20 -mt-px">
+    <div className="w-full min-h-screen bg-black flex items-center justify-center px-6 md:px-10 py-20">
       <div className="cntr flex flex-col md:flex-row w-full h-auto md:h-[90%] gap-10 items-center">
         <div className="limg relative w-full md:w-1/2 h-[50vh] md:h-full overflow-hidden">
           <img className='w-full h-full object-contain scale-[0.8]' src="./imag.png" alt="GTA VI" />
