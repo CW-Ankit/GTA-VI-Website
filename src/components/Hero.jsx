@@ -30,9 +30,10 @@ const Hero = () => {
     })
 
     const girlTargetBottom = window.innerWidth < 768 ? "-55%" : "-45%";
+    const girlTargetScale = window.innerWidth < 768 ? 1.1 : 0.7;
     
     gsap.to(".girl", {
-      scale: 1.1,
+      scale: girlTargetScale,
       bottom: girlTargetBottom,
       rotate: 0,
       duration: 1.8,
@@ -172,15 +173,17 @@ const Hero = () => {
       
       {/* 
           RADIAL FADE OVERLAY
-          Creates a soft, expanding black blur from the bottom center.
+          Internal depth blur.
       */}
       <div className="radial-fade absolute inset-0 z-3 pointer-events-none bg-[radial-gradient(circle_at_bottom,black_0%,transparent_75%)]" />
 
       {/* 
-          BOTTOM LINEAR TRANSITION GRADIENT
-          Creates a seamless blend between the Hero section and the black ContentSection.
+          BOTTOM SECTION TRANSITION
+          Seamlessly blends the Hero section into the black ContentSection.
+          - bottom-0: Fixes the gap by aligning exactly with the bottom edge.
+          - z-50: Sits on top of everything to ensure a perfect transition.
       */}
-      <div className="absolute bottom-0 left-0 w-full h-64 z-3 pointer-events-none bg-gradient-to-t from-black via-black/60 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-42 z-50 pointer-events-none bg-linear-to-t from-black via-black/40 to-transparent" />
       
       <div className="text flex flex-col gap-1 text-5xl md:text-8xl text-white absolute z-10 -translate-x-1/2 -translate-y-1/2 top-1/3 left-1/2 text-center px-4 will-change-transform"
            style={{ backfaceVisibility: 'hidden' }}>
@@ -192,10 +195,6 @@ const Hero = () => {
       <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
         <img 
           className='girl absolute inset-0 m-auto w-auto -bottom-96 md:bottom-[-150%] rotate-45 scale-[1.7] md:scale-[0.9] object-contain' 
-          style={{ 
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 40%)',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 40%)' 
-          }}
           src="./girlbg.png" 
           alt="Character"
         />
