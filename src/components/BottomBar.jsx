@@ -1,5 +1,19 @@
+/**
+ * @file BottomBar.jsx
+ * @description UI element providing page navigation cues and platform branding.
+ */
+
 import React from 'react';
 
+/**
+ * BottomBar Component.
+ * 
+ * Renders a semi-transparent gradient bar at the bottom of the screen 
+ * featuring a scroll indicator and the PS5 logo.
+ * 
+ * @component
+ * @returns {JSX.Element} The bottom bar UI.
+ */
 const BottomBar = () => {
   return (
     <div className="bottom-bar flex justify-between items-center absolute z-10 bottom-0 left-0 w-full py-8 px-7 bg-linear-to-t from-black to-transparent">

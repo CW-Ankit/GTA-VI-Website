@@ -1,5 +1,19 @@
+/**
+ * @file ContentSection.jsx
+ * @description Information section detailing game features and providing a CTA.
+ */
+
 import React from 'react';
 
+/**
+ * ContentSection Component.
+ * 
+ * Renders a two-column layout containing a game screenshot and 
+ * descriptive marketing text with a "Download Now" call-to-action button.
+ * 
+ * @component
+ * @returns {JSX.Element} The detailed content section.
+ */
 const ContentSection = () => {
   return (
     <div className="w-full h-screen bg-black flex items-center justify-center px-10">
