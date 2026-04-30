@@ -1,7 +1,7 @@
 /**
  * @file App.jsx
  * @description Root component of the GTA VI Website. 
- * Manages the application lifecycle: Loader -> IntroAnimation -> LandingPage.
+ * Manages a precise sequence: Asset Loading -> Static Brand State -> Intro Reveal -> Landing Page.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -12,50 +12,45 @@ import Loader from './components/Loader';
 /**
  * Main Application Component.
  * 
- * Coordinates the sequence of the site's entry:
- * 1. Loader: Shown while assets (fonts/images) are loading.
- * 2. IntroAnimation: Triggered once the browser's window.onload event fires.
- * 3. LandingPage: Triggered once the IntroAnimation sequence completes.
+ * Handles the asset-aware lifecycle of the application.
  * 
  * @component
  * @returns {JSX.Element} The rendered application.
  */
 const App = () => {
-  /** State to track if essential assets are still loading */
-  const [isLoading, setIsLoading] = useState(true);
+  /** State to track if the critical image for the intro has loaded */
+  const [imageLoaded, setImageLoaded] = useState(false);
   /** State to track if the intro animation sequence should start */
-  const [showIntro, setShowIntro] = useState(false);
+  const [triggerIntro, setTriggerIntro] = useState(false);
   /** State to track if the final content should be revealed */
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Handle the transition from Loader to IntroAnimation
-    const handleLoad = () => {
-      // Small delay to ensure the "slow fade" of the loader is appreciated
+    // Pre-load the critical image for the reveal animation
+    const img = new Image();
+    img.src = './bg1.png';
+    img.onload = () => {
+      setImageLoaded(true);
+      // Give the user a moment to see the static brand logo before starting the animation
       setTimeout(() => {
-        setIsLoading(false);
-        setShowIntro(true);
-      }, 1000);
+        setTriggerIntro(true);
+      }, 800);
     };
-
-    // If the window is already loaded (e.g., on hot reload), trigger immediately
-    if (document.readyState === 'complete') {
-      handleLoad();
-    } else {
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
-    }
+    img.onerror = () => {
+      console.error("Failed to load critical asset: bg1.png");
+      setImageLoaded(true); // Proceed anyway to avoid hanging
+      setTriggerIntro(true);
+    };
   }, []);
 
   return (
     <>
-      {/* Stage 1: Assets Loader */}
-      {isLoading && <Loader />}
+      {/* Stage 1: Static Brand Loader (visible until image is ready) */}
+      {!triggerIntro && <Loader isImageReady={imageLoaded} />}
       
-      {/* Stage 2: Brand Reveal Animation */}
-      {!isLoading && showIntro && (
+      {/* Stage 2: Dynamic Brand Reveal (triggered after image load) */}
+      {triggerIntro && !showContent && (
         <IntroAnimation onComplete={() => {
-          setShowIntro(false);
           setShowContent(true);
         }} />
       )}

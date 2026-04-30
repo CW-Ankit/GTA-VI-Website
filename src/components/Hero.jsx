@@ -49,36 +49,36 @@ const Hero = () => {
      * @param {number} yOffset - Vertical shift value.
      */
     const applyParallax = (xOffset, yOffset) => {
+      // Use more visible multipliers and a shorter duration for a snappier feel
       gsap.to(".imagesdiv .text", {
-        x: xOffset * 0.8,
-        y: yOffset * 0.8,
-        duration: 0.5,
+        x: xOffset * 0.5,
+        y: yOffset * 0.5,
+        duration: 0.3,
         ease: "power2.out"
       })
       gsap.to(".sky", {
-        x: xOffset,
-        y: yOffset,
-        duration: 0.5,
+        x: xOffset * 0.8,
+        y: yOffset * 0.8,
+        duration: 0.3,
         ease: "power2.out"
       })
       gsap.to(".bg", {
-        x: xOffset * 1.9,
-        y: yOffset * 1.9,
-        duration: 0.5,
+        x: xOffset * 1.5,
+        y: yOffset * 1.5,
+        duration: 0.3,
         ease: "power2.out"
       })
     }
 
     /**
-     * Handles mouse movement to apply parallax shifts to elements.
-     * Only active on devices with a pointer (not touch).
+     * Mouse Parallax Handler (Desktop)
      * @param {MouseEvent} e - The mouse event object.
      */
     const handleMouseMove = (e) => {
       if (window.innerWidth < 768) return;
 
-      const xMove = (e.clientX / window.innerWidth - 0.5) * 30
-      const yMove = (e.clientY / window.innerHeight - 0.5) * 30
+      const xMove = (e.clientX / window.innerWidth - 0.5) * 60
+      const yMove = (e.clientY / window.innerHeight - 0.5) * 60
       applyParallax(xMove, yMove);
     }
 

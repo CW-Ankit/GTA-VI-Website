@@ -4,7 +4,6 @@
  * Displays the brand logo and primary navigation links.
  */
 
-import React from 'react';
 
 /**
  * Navbar Component.
