@@ -5,29 +5,18 @@
  * integrates the mask image once it's loaded.
  */
 
-import React from 'react';
-
 const Loader = ({ isImageReady }) => {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black overflow-hidden">
-      {/* 
-          SVG CONFIGURATION:
-          - viewBox='0 0 800 600': Defines the internal coordinate system.
-          - preserveAspectRatio='xMidYMid slice': Ensures the SVG fills the 
-            container like 'object-cover', preventing distortion on different screens.
-          - w-full h-full: Makes the SVG occupy the entire viewport.
-      */}
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black overflow-hidden">
       <svg viewBox='0 0 800 600' preserveAspectRatio='xMidYMid slice' className="w-full h-full">
         <defs>
           {/* 
-              SVG MASKING LOGIC:
-              A mask works like a stencil. White areas are "holes" where the image shows 
-              through, and black areas are "solid" and hide everything behind them.
+              The mask defines which parts of the image are visible.
+              Anything inside the <text> element (white) will show the image.
+              The <rect> (black) hides everything else.
           */}
           <mask id='loaderMask'>
-            {/* Base layer: Black rectangle hides everything in the viewport */}
             <rect width='100%' height='100%' fill='black' />
-            {/* Stencil: The white "VI" text creates the hole we see through */}
             <text 
               x="50%" 
               y="50%" 
@@ -43,18 +32,16 @@ const Loader = ({ isImageReady }) => {
         </defs>
         
         {/* 
-            DYNAMIC RENDERING:
-            If isImageReady is true, we render the image with the mask applied.
-            This allows the logo to transition from a solid white color to 
-            containing the actual image without a flickering effect.
+            If the image is loaded, we use the mask to show the image inside the "VI".
+            This creates a perfect bridge to the IntroAnimation.
         */}
         {isImageReady && (
           <image href='./bg1.png' width='100%' height='100%' preserveAspectRatio='xMidYMid slice' mask="url(#loaderMask)" />
         )}
         
         {/* 
-            FALLBACK STATE:
-            Renders a simple white "VI" text if the image is still downloading.
+            Fallback: If the image isn't ready yet, just show a white "VI".
+            This ensures the user doesn't see a blank black screen.
         */}
         {!isImageReady && (
           <text 
