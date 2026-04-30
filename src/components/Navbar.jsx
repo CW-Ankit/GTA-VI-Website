@@ -16,7 +16,7 @@
  */
 const Navbar = () => {
   return (
-    <div className='nav px-4 md:px-7 py-4 md:py-8 absolute z-10 top-0 left-0 w-full flex flex-row items-center justify-between gap-2'>
+    <div className='nav px-4 md:px-7 py-4 md:py-8 absolute z-60 top-0 left-0 w-full flex flex-row items-center justify-between gap-2'>
       <div className='flex gap-2 md:gap-4 logo items-center'>
         <div className="lines flex flex-col gap-0.5 md:gap-1 text-shadow-zinc-900">
           <div className="rounded line w-6 h-0.5 md:w-9 md:h-1 bg-white"></div>
