@@ -2,19 +2,19 @@
 
 A high-performance, non-responsive landing page for Grand Theft Auto VI, built with modern front-end technologies to replicate the aesthetic and interactive feel of the official Rockstar Games presentation.
 
-## 🚀 Tech Stack
+## Tech Stack
 
 * **React + Vite**: Made using the latest React + Vite JavaScript setup.
 * **GSAP**: For Beautiful 3D like Animations.
   
-## ✨ Features
+## Features
 
 * **Dynamic Hero Section**: Immersive visuals featuring the GTA VI branding.
 * **Gameplay Carousel**: Interactive slider showcasing game screenshots and environment details.
 * **Scroll Animations**: Entrance effects for sections using `data-aos` attributes.
 * **Platform Branding**: Integrated logos for PS5, Xbox Series X|S, and Rockstar Games.
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 1.  **Clone the repository**:
     ```bash
@@ -33,5 +33,5 @@ A high-performance, non-responsive landing page for Grand Theft Auto VI, built w
     ```
 
 
-## ⚖️ Disclaimer
+## Disclaimer
 This project is for educational and portfolio purposes only. I am not affiliated with Rockstar Games or Take-Two Interactive. All visual assets and trademarks belong to their respective owners.
